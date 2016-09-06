@@ -1,10 +1,10 @@
 all: evt
-evt: uvtls.a
+evt: libuvtls.a
 
-uvtls.a: uv_tls.c evt_tls.c uv_tls.h evt_tls.h
+libuvtls.a: uv_tls.c evt_tls.c uv_tls.h evt_tls.h
 	$(CC) -g -Wall -c uv_tls.c evt_tls.c -lssl -lcrypto -lrt -luv
-	ar -cvq uvtls.a *.o
+	ar -cvq libuvtls.a *.o
 
 clean:
 	rm -f *.o
-	rm -f uvtls.a
+	rm -f libuvtls.a
