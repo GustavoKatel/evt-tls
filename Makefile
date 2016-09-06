@@ -1,18 +1,10 @@
-all: clean evt test_evt gen_cert test
-evt:
-	make -C sample/libuv-tls evt
+all: evt
+evt: uvtls.a
 
-gen_cert:
-	openssl req -x509 -newkey rsa:2048 -nodes -keyout server-key.pem  \
-        -out server-cert.pem -config ssl_test.cnf
-	-cp -rf server-cert.pem server-key.pem sample/libuv-tls/
-
-test_evt:
-	$(CC) -g -Wall -o $@ evt_test.c evt_tls.c -lssl -lcrypto -lrt
-
-test:
-	./test_evt
+uvtls.a: uv_tls.c evt_tls.c uv_tls.h evt_tls.h
+	$(CC) -g -Wall -c uv_tls.c evt_tls.c -lssl -lcrypto -lrt -luv
+	ar -cvq uvtls.a *.o
 
 clean:
-	make -C sample/libuv-tls clean
-	-rm test_evt
+	rm -f *.o
+	rm -f uvtls.a
