@@ -29,7 +29,7 @@ typedef void (*uv_handshake_cb)(uv_tls_t*, int);
 typedef void (*uv_tls_write_cb)(uv_tls_t*, int);
 
 struct uv_tls_s {
-   uv_tcp_t skt;
+   uv_tcp_t *skt;
    evt_tls_t *tls;
 
    uv_read_cb tls_rd_cb;
@@ -42,7 +42,7 @@ struct uv_tls_s {
 //implementation of network writer for libuv using uv_try_write
 int uv_tls_writer(evt_tls_t *t, void *bfr, int sz);
 
-int uv_tls_init(uv_loop_t *loop, evt_ctx_t *ctx, uv_tls_t *endpt);
+int uv_tls_init(uv_loop_t *loop, evt_ctx_t *ctx, uv_tls_t *endpt, uv_tcp_t *handle);
 
 int uv_tls_connect(uv_tls_t *t, uv_handshake_cb cb);
 int uv_tls_accept(uv_tls_t *tls, uv_handshake_cb cb);
